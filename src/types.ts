@@ -3,6 +3,11 @@ export enum HTTPMethod {
   GET = "GET",
 }
 
+export enum HTTPStatus {
+  OK = 200,
+  INTERNAL_SERVER_ERROR = 500,
+}
+
 export enum Role {
   USER = "user",
   ADMIN = "admin",
@@ -22,4 +27,18 @@ export interface HTTPRequest {
   path: string;
   body?: User;
   params: { [key: string]: string };
+}
+
+export interface HTTPError {
+  message: string;
+}
+
+interface OberserverStatus {
+  status: HTTPStatus;
+}
+
+export interface ObserverHandlers {
+  next: (request: HTTPRequest) => OberserverStatus;
+  error: (error: HTTPError) => OberserverStatus;
+  complete: () => void;
 }
